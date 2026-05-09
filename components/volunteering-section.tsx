@@ -56,9 +56,7 @@ export function VolunteeringSection() {
             Volunteering
           </h2>
           <p className="mt-3 max-w-2xl text-[var(--muted)]">
-            Committing 200+ hours to what counts and matters. Scouting, New
-            Jersey summer camps in 2023 (30+ children), and refugee community
-            events (200+ children). Each on its own card, aligned with my CV.
+            Committing 200+ hours to what counts and matters.
           </p>
         </motion.div>
 
