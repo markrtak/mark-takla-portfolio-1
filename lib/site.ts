@@ -19,6 +19,11 @@ export const SITE = {
       : "/cv/mark-takla-cv.pdf",
 } as const;
 
+/**
+ * GitHub repo `name` values never shown in the Projects section (e.g. this site’s own repo).
+ */
+export const EXCLUDED_PROJECT_REPO_SLUGS = ["mark-takla-portfolio-1"] as const;
+
 /** @deprecated Use SITE.cvUrl */
 export const CV_URL = SITE.cvUrl;
 
@@ -74,68 +79,51 @@ export type ExperienceEntry = {
 
 export const EXPERIENCE: ExperienceEntry[] = [
   {
+    title: "Computer Science Junior Teaching Assistant",
+    organization: "German University in Cairo",
+    range: "Sep 2024 – Jun 2026",
+    location: "Cairo, Egypt",
+    bullets: [
+      "CSEN102 & CSIS102 (Python): Instructed 60+ students in core programming and data structures for engineering and business informatics cohorts. Supervised by Assoc. Prof. Dr. Milad Ghantous.",
+      "CSEN401 (OOP with Java): Mentored 50+ students and held 2 weekly project office hours to guide complex software projects that carried most of the course grade.",
+      "Built soft skills across leadership, communication, teaching, patience, accountability, and time management.",
+    ],
+    tags: ["Python", "Java", "OOP", "Teaching"],
+  },
+  {
     title: "Robotic Process Automation (RPA) Internship",
     organization: "Bank NXT",
-    range: "Jul 2025 - Aug 2025",
+    range: "Jul 2025 – Aug 2025",
     location: "Egypt",
     bullets: [
-      "Got introduced to the banking industry with all its departments.",
-      "Created UIPath unattended robots to do many tasks such as logging in, multiple form-filling from an Excel spreadsheet, extracting information from websites and using it for different purposes. (demo link)",
-      "With the use of Studio, Orchestrator, and the robots, I was able to save the bank time and resources.",
-      "Also spent a week in the Integration department and a week in the IT Governance and Risk Management.",
+      "Completed a multidisciplinary rotation across the banking industry—including intensive weeks in RPA, Integration, and IT Governance & Risk Management—and gained exposure to how those functions interoperate.",
+      "Developed 5+ unattended UiPath robots for automated login, Excel-driven multi-form data entry, web scraping, and related workflows using Studio and Orchestrator; eliminated manual form-filling time by 100% and saved significant bank resources. (Demo link)",
     ],
     tags: ["UiPath", "RPA", "Excel", "Automation"],
   },
   {
-    title: "Vehicle Dynamics Engineer",
-    organization: "GUC Innovators",
-    range: "Jun 2024 - Jul 2025",
-    location: "Cairo, Egypt",
-    tags: ["MATLAB", "Dynamics", "Simulation"],
-  },
-  {
-    title: "Robotics Engineer",
-    organization: "GUC Google Developer Groups",
-    range: "Oct 2024 - Jun 2025",
-    location: "Cairo, Egypt",
-    tags: ["Robotics", "GDG"],
-  },
-  {
-    title: "Computer Science Junior Teaching Assistant",
-    organization: "German University in Cairo",
-    range: "Sep 2024 - Jan 2025",
+    title: "Vehicle Dynamics Engineer & Robotics Engineer",
+    organization: "GUC Innovators & GUC Google Developer Groups",
+    range: "Jun 2024 – Jul 2025",
     location: "Cairo, Egypt",
     bullets: [
-      "Worked as a junior teaching assistant for CSEN102 and CSIS102 (Python) engineering and business informatics students in the GUC.",
-      "Supervised by Assoc. Prof. Dr. Milad Ghantous.",
-      "Gained many soft-skills such as leadership, communication, teaching, patience, accountability, and time management.",
+      "Vehicle dynamics and simulation work with GUC Innovators—MATLAB-based modeling and team engineering workflows.",
+      "Robotics engineering with GUC Google Developer Groups—hands-on builds, demos, and peer collaboration alongside GDG initiatives.",
     ],
-    tags: ["Python", "Teaching", "CS1"],
+    tags: ["MATLAB", "Dynamics", "Robotics", "GDG"],
   },
   {
-    title: "Computer Science Junior Teaching Assistant",
-    organization: "German University in Cairo",
-    range: "Feb 2026 - Jun 2026",
-    location: "Cairo, Egypt",
-    bullets: [
-      "Worked as a junior teaching assistant for CSEN401 (OOP with Java) engineering students in the GUC.",
-      "Helped student by conducting weekly office hours to help them on a project worth most of the grade.",
-    ],
-    tags: ["Java", "OOP", "Teaching"],
-  },
-  {
-    title: "Engineering Internship",
+    title: "Rotational Engineering Internship",
     organization: "Alstom",
-    range: "Jun 2024 - Aug 2024",
+    range: "Jun 2024 – Aug 2024",
     location: "Multi-site rotation",
     bullets: [
-      "Went through a rotation on many different engineering departments in the railway industry.",
-      "Verification and Validation (V&V); learned about the different train supervision and testing systems such as the Automatic Train Supervision (ATS) and Automatic Train Control (ATC). I have conducted and analyzed signaling test cases on the line Umraniye-Atasehir Goztepe (UAG) in Turkey based on the client’s needs, ensuring accurate train simulations within Alstom’s Human Machine Interface (HMI) and effectively reported any discrepancies.",
-      "Integrated Control Centre (ICC); acquired knowledge on SCADA, U400 by Alstom, virtualization, speed management and safe distancing, along with train scheduling and dispatching systems.",
-      "Communication Based Interlocking (CBI); got presented to train interlocking structures like IXL and trackside equipment, such as point machines and balises, configuration rules, and all the trackside safety regulations. I have designed multiple railway tracks with signals and trackside equipment using AutoCAD, ensuring adherence to engineering rules and meeting Safety Integrity Level (SIL) 4 standards.",
-      "Requirements and Configuration Management (RCM); was taught the different tendering processes in detail and projects’ life cycles.",
-      "I also got lectured on the ISTQB Certified Tester Foundation Level (CTFL) v4.0 where I gained an understanding of testing principles, methodologies, and tools, including test design techniques, static testing, and the role of testing throughout various software development lifecycles.",
-      "Took lectures on cybersecurity and networks.",
+      "Completed a comprehensive rotation through Verification & Validation (V&V), Integrated Control Centre (ICC), Communication Based Interlocking (CBI), and Requirements & Configuration Management (RCM), spanning railway signaling, control, and project lifecycles.",
+      "Verification & Validation (V&V): Learned Automatic Train Supervision (ATS) and Automatic Train Control (ATC) supervision and testing stacks; conducted and analyzed signaling test cases for the Umraniye–Ataşehir–Göztepe (UAG) line in Turkey against client needs. Applied ISTQB-style thinking alongside SCADA perspectives to stress mission-critical reliability—and identified 4 technical discrepancies in signaling scenarios within Alstom’s Human Machine Interface (HMI), ensuring accurate train simulations before handoff.",
+      "Integrated Control Centre (ICC): SCADA, Alstom U400, virtualization, speed management and safe distancing, plus train scheduling and dispatching systems.",
+      "Communication Based Interlocking (CBI): Interlocking structures (e.g. IXL), point machines, balises, configuration rules, and trackside safety—designed multiple railway layouts with signals and track equipment in AutoCAD to engineering rules and SIL 4 expectations.",
+      "Requirements & Configuration Management (RCM): Tendering processes, requirements flow, and full project life cycles.",
+      "ISTQB Certified Tester Foundation Level (CTFL) v4.0 curriculum—testing principles, design techniques, static testing, and testing across software lifecycles; plus foundations in cybersecurity and networks.",
     ],
     tags: ["Rail", "Testing", "SCADA", "Safety"],
   },
@@ -157,7 +145,7 @@ export const DEGREES: DegreeEntry[] = [
     range: "Sep 2023 - Present",
     location: "Cairo, Egypt",
     description:
-      "Cumulative GPA on German scale 2.15 (~3.3 US B+). Coursework spans algorithms, systems, ML, and software engineering.",
+      "Cumulative German scale GPA: 2.15 (equivalent to ~3.3 B+ on the US scale). Coursework spans algorithms, systems, ML, and software engineering.",
     coursework: [
       "Machine learning",
       "Data structures",
@@ -173,6 +161,49 @@ export const DEGREES: DegreeEntry[] = [
     description:
       "Early graduation after year 11; 8 IGCSEs at grade 9 (A* equivalent); A Level Mathematics grade A*.",
     coursework: ["Mathematics", "Sciences", "IGCSE program"],
+  },
+];
+
+export type VolunteerEntry = {
+  title: string;
+  organization: string;
+  range: string;
+  location: string;
+  summary: string;
+  /** Visual variant for the card chrome */
+  vibe: "ribbon" | "ticket" | "stamp";
+};
+
+/**
+ * Volunteering — align wording and dates with your CV PDF (`public/cv/`).
+ */
+export const VOLUNTEERING: VolunteerEntry[] = [
+  {
+    title: "Scout Leader",
+    organization: "Scouting",
+    range: "2013 to Present",
+    location: "Egypt",
+    summary:
+      "Long term volunteer leadership in scouting: running programs, ceremonies, and mentoring for young people. Building routines, responsibility, and teamwork outside school and paid work.",
+    vibe: "ribbon",
+  },
+  {
+    title: "Summer camp programs",
+    organization: "New Jersey, USA",
+    range: "Summer 2023",
+    location: "United States",
+    summary:
+      "Managed summer camps in New Jersey for 30+ children: schedules, activities, safety, and keeping energy high across full camp days.",
+    vibe: "ticket",
+  },
+  {
+    title: "Refugee community support",
+    organization: "Charity & humanitarian events",
+    range: "Ongoing",
+    location: "Egypt",
+    summary:
+      "Organized charity activities and ceremonies for 200+ Sudanese-Egyptian refugees. Logistics, inclusion, and meaningful events at scale.",
+    vibe: "stamp",
   },
 ];
 

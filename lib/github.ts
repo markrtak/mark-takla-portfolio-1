@@ -1,3 +1,5 @@
+import { EXCLUDED_PROJECT_REPO_SLUGS } from "@/lib/site";
+
 export type GitHubRepo = {
   id: number;
   name: string;
@@ -15,6 +17,13 @@ export type GitHubRepo = {
 function isExcluded(repo: GitHubRepo): boolean {
   const name = repo.name.toLowerCase();
   const full = repo.full_name.toLowerCase();
+  if (
+    EXCLUDED_PROJECT_REPO_SLUGS.some((slug) => name === slug.toLowerCase())
+  ) {
+    return true;
+  }
+  // Catch renames / variants of the portfolio site repo
+  if (name.includes("mark-takla-portfolio")) return true;
   if (name === "csguc" || full.includes("/csguc")) return true;
   if (name === "newco" || full.endsWith("/newco")) return true;
   if (name.includes("fawry") && name.includes("challenge")) return true;

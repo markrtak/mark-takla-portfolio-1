@@ -1,6 +1,10 @@
+import Link from "next/link";
 import { FadeIn } from "@/components/fade-in";
 import { ProjectCard } from "@/components/project-card";
 import type { GitHubRepo } from "@/lib/github";
+import { SITE } from "@/lib/site";
+
+const allReposUrl = `${SITE.github}?tab=repositories`;
 
 type ProjectsSectionProps = {
   repos: GitHubRepo[];
@@ -22,14 +26,31 @@ export function ProjectsSection({ repos }: ProjectsSectionProps) {
           </h2>
           <p className="mt-3 max-w-2xl text-[var(--muted)]">
             And this website you are viewing! Created with Next.js, TypeScript,
-            Tailwind CSS, and Framer Motion, then deployed and hosted on Vercel.
+            Tailwind CSS, and Framer Motion, then deployed and hosted on Vercel.{" "}
+            <Link
+              href={allReposUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
+            >
+              View the full list of projects on GitHub
+            </Link>
+            .
           </p>
         </FadeIn>
 
         {repos.length === 0 ? (
           <FadeIn delay={0.1} className="mt-12 rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-10 text-center text-[var(--muted)]">
-            Could not load repositories. Try again later or visit GitHub
-            directly.
+            Could not load repositories. Try again later or{" "}
+            <Link
+              href={allReposUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
+            >
+              browse all projects on GitHub
+            </Link>
+            .
           </FadeIn>
         ) : (
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
