@@ -56,7 +56,7 @@ export function VolunteeringSection() {
             Volunteering
           </h2>
           <p className="mt-3 max-w-2xl text-[var(--muted)]">
-            Committing 200+ hours to what counts and matters.
+            Committing hundreds of hours to what counts and matters.
           </p>
         </motion.div>
 
