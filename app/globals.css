@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* Base neutral palette with existing accent preserved. */
+:root {
+  --bg: #f8f8f8;
+  --surface: #ffffff;
+  --surface-muted: #f8f8f8;
+  --ink: #222222;
+  --muted: #7b7b7b;
+  --border: #7b7b7b;
+  --accent: #fb7185;
+  --accent-hover: #fda4af;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --gradient: var(--accent);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-scribble: var(--font-scribble);
+  --font-scribble-alt: var(--font-scribble-alt);
+  --font-ahlan: var(--font-ahlan);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #f8f8f8;
+    --surface: #ffffff;
+    --surface-muted: #f8f8f8;
+    --ink: #222222;
+    --muted: #7b7b7b;
+    --border: #7b7b7b;
+    --accent: #e11d48;
+    --accent-hover: #be123c;
+    --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+    --gradient: var(--accent);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/**
+ * Hero scribbles: hide center so labels only appear in a ring around figure + text.
+ * Ellipse tuned for typical hero layout (figure left / copy right on md+).
+ */
+.hero-scribble-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 68% 78% at 50% 44%,
+    transparent 0%,
+    transparent 41%,
+    black 46%
+  );
+  mask-image: radial-gradient(
+    ellipse 68% 78% at 50% 44%,
+    transparent 0%,
+    transparent 41%,
+    black 46%
+  );
+}
+
+@media (min-width: 768px) {
+  .hero-scribble-mask {
+    -webkit-mask-image: radial-gradient(
+      ellipse 62% 72% at 48% 46%,
+      transparent 0%,
+      transparent 38%,
+      black 43%
+    );
+    mask-image: radial-gradient(
+      ellipse 62% 72% at 48% 46%,
+      transparent 0%,
+      transparent 38%,
+      black 43%
+    );
+  }
+}
+
+/* Mobile: show full scribble ring (desktop keeps radial mask above). */
+@media (max-width: 767px) {
+  .hero-scribble-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
