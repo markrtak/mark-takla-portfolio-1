@@ -3,7 +3,27 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import {
+  reducedOrSpring,
+  springHoverLift,
+  springLayout,
+  springReveal,
+  springRevealSoft,
+  springTactile,
+  viewportReveal,
+  viewportRevealLoose,
+} from "@/lib/motion";
 import { CERTIFICATIONS, DEGREES, EXPERIENCE } from "@/lib/site";
+import {
+  uiCardInteractive,
+  uiCardSurface,
+  uiDisplayHeading,
+  uiEyebrowMuted,
+  uiLead,
+  uiSectionDivider,
+  uiSectionScrollMargin,
+  uiTagSolid,
+} from "@/lib/ui-classes";
 
 type TabId = "experience" | "education" | "certifications";
 
@@ -93,7 +113,7 @@ function ExperienceLaptop({
       transition={
         reduce
           ? { duration: 0 }
-          : { type: "spring", stiffness: 420, damping: 28 }
+          : springTactile
       }
     >
       <div
@@ -162,16 +182,16 @@ export function ExperienceEducationSection() {
   return (
     <section
       id="experience"
-      className="relative scroll-mt-24 border-t border-[var(--border)] bg-[var(--bg)] px-4 py-20 sm:px-6"
+      className={`relative ${uiSectionScrollMargin} ${uiSectionDivider} bg-[var(--bg)] px-4 py-20 sm:px-6`}
     >
       <span
         id="education"
-        className="pointer-events-none absolute left-0 top-0 block h-px w-px scroll-mt-28 opacity-0"
+        className={`pointer-events-none absolute left-0 top-0 block h-px w-px ${uiSectionScrollMargin} opacity-0`}
         aria-hidden
       />
       <span
         id="certifications"
-        className="pointer-events-none absolute left-0 top-0 block h-px w-px scroll-mt-28 opacity-0"
+        className={`pointer-events-none absolute left-0 top-0 block h-px w-px ${uiSectionScrollMargin} opacity-0`}
         aria-hidden
       />
       <div className="mx-auto max-w-6xl">
@@ -179,22 +199,20 @@ export function ExperienceEducationSection() {
           className="text-center"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-64px" }}
-          transition={{ duration: reduce ? 0 : 0.45 }}
+          viewport={viewportReveal}
+          transition={reducedOrSpring(reduce, springReveal)}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-            Background
-          </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
+          <p className={uiEyebrowMuted}>Background</p>
+          <h2 className={`mt-2 ${uiDisplayHeading}`}>
             Experience, education & certifications
           </h2>
-              <p className="mx-auto mt-3 max-w-2xl text-[var(--muted)]">
-                Choose a category below - everything lives in this one section.
-              </p>
+          <p className={`mx-auto ${uiLead}`}>
+            Choose a category below - everything lives in this one section.
+          </p>
         </motion.div>
 
         <div
-          className="mx-auto mt-10 flex max-w-2xl flex-col gap-2 sm:flex-row sm:rounded-full sm:border sm:border-[var(--border)] sm:bg-[var(--surface-muted)] sm:p-1 sm:shadow-inner"
+          className="mx-auto mt-10 flex max-w-2xl flex-col gap-2 sm:flex-row sm:rounded-full sm:border sm:border-[color-mix(in_srgb,var(--border)_38%,transparent)] sm:bg-[color-mix(in_srgb,var(--surface-muted)_92%,transparent)] sm:p-1 sm:shadow-[inset_0_1px_0_color-mix(in_srgb,var(--ink)_5%,transparent)] sm:backdrop-blur-sm"
           role="tablist"
           aria-label="Experience, education, or certifications"
         >
@@ -206,7 +224,7 @@ export function ExperienceEducationSection() {
               id={`tab-${id}`}
               aria-selected={tab === id}
               aria-controls={`panel-${id}`}
-              className={`relative flex-1 rounded-full py-3 text-sm font-semibold transition-colors sm:py-2.5 ${
+              className={`relative flex-1 rounded-full py-3 text-sm font-semibold tracking-tight outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] sm:py-2.5 ${
                 tab === id
                   ? "text-[var(--ink)]"
                   : "text-[var(--muted)] hover:text-[var(--ink)]"
@@ -216,12 +234,8 @@ export function ExperienceEducationSection() {
               {tab === id && (
                 <motion.span
                   layoutId="career-tab-pill"
-                  className="absolute inset-0 rounded-full bg-[var(--surface)] shadow-sm"
-                  transition={{
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 35,
-                  }}
+                  className="absolute inset-0 rounded-full bg-[var(--surface)] shadow-[var(--shadow-card)] ring-1 ring-[color-mix(in_srgb,var(--ink)_4%,transparent)]"
+                  transition={springLayout}
                 />
               )}
               <span className="relative z-10 sm:hidden">{short}</span>
@@ -246,11 +260,24 @@ export function ExperienceEducationSection() {
                   />
                 </div>
 
-                <div className="mt-4 min-w-0 space-y-5 lg:mt-0">
-                  {EXPERIENCE.map((job) => (
-                    <article
+                <div className="mt-4 min-w-0 space-y-6 lg:mt-0">
+                  {EXPERIENCE.map((job, idx) => (
+                    <motion.article
                       key={experienceJobKey(job)}
-                      className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm transition-colors hover:border-[color-mix(in_srgb,var(--accent)_35%,var(--border))]"
+                      className={`p-6 sm:p-7 ${uiCardInteractive}`}
+                      initial={reduce ? false : { opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={viewportRevealLoose}
+                      transition={reducedOrSpring(
+                        reduce,
+                        springRevealSoft,
+                        idx * 0.055,
+                      )}
+                      whileHover={
+                        reduce
+                          ? undefined
+                          : { y: -5, transition: springHoverLift }
+                      }
                       onMouseEnter={() => {
                         setScreenGlow(screenGlowFromTags(job.tags));
                         setCardHovered(true);
@@ -260,47 +287,44 @@ export function ExperienceEducationSection() {
                         setCardHovered(false);
                       }}
                     >
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
-                          <h3 className="text-lg font-bold text-[var(--ink)]">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                        <div className="min-w-0">
+                          <h3 className="text-lg font-bold tracking-tight text-[var(--ink)]">
                             {job.title}
                           </h3>
-                          <p className="font-medium text-[var(--muted)]">
+                          <p className="mt-0.5 font-semibold tracking-tight text-[var(--muted)]">
                             {job.organization}
                           </p>
                         </div>
-                        <div className="text-left text-sm text-[var(--muted)] sm:text-right">
-                          <p className="font-medium text-[var(--ink)]">
+                        <div className="shrink-0 text-left text-sm tabular-nums tracking-tight text-[var(--muted)] sm:text-right">
+                          <p className="font-semibold text-[var(--ink)]">
                             {job.range}
                           </p>
                           <p>{job.location}</p>
                         </div>
                       </div>
                       {job.summary && (
-                        <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">
+                        <p className="mt-4 text-sm leading-relaxed tracking-tight text-[var(--muted)]">
                           {job.summary}
                         </p>
                       )}
                       {job.bullets && job.bullets.length > 0 && (
-                        <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-[var(--muted)]">
+                        <ul className="mt-3 list-inside list-disc space-y-1.5 text-sm leading-relaxed tracking-tight text-[var(--muted)]">
                           {job.bullets.map((b) => (
                             <li key={b}>{b}</li>
                           ))}
                         </ul>
                       )}
                       {job.tags && job.tags.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-2">
+                        <div className="mt-5 flex flex-wrap gap-2">
                           {job.tags.map((t) => (
-                            <span
-                              key={t}
-                              className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-xs font-medium text-[var(--ink)]"
-                            >
+                            <span key={t} className={uiTagSolid}>
                               {t}
                             </span>
                           ))}
                         </div>
                       )}
-                    </article>
+                    </motion.article>
                   ))}
                 </div>
               </div>
@@ -322,49 +346,59 @@ export function ExperienceEducationSection() {
                   />
                 </div>
 
-                <div className="mt-4 min-w-0 space-y-5 lg:mt-0">
-                  {DEGREES.map((d) => (
-                    <article
+                <div className="mt-4 min-w-0 space-y-6 lg:mt-0">
+                  {DEGREES.map((d, idx) => (
+                    <motion.article
                       key={d.degree}
-                      className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm"
+                      className={`p-6 sm:p-7 ${uiCardInteractive}`}
+                      initial={reduce ? false : { opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={viewportRevealLoose}
+                      transition={reducedOrSpring(
+                        reduce,
+                        springRevealSoft,
+                        idx * 0.055,
+                      )}
+                      whileHover={
+                        reduce
+                          ? undefined
+                          : { y: -5, transition: springHoverLift }
+                      }
                     >
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
-                          <h3 className="text-lg font-bold text-[var(--ink)]">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                        <div className="min-w-0">
+                          <h3 className="text-lg font-bold tracking-tight text-[var(--ink)]">
                             {d.degree}
                           </h3>
-                          <p className="font-medium text-[var(--muted)]">
+                          <p className="mt-0.5 font-semibold tracking-tight text-[var(--muted)]">
                             {d.institution}
                           </p>
                         </div>
-                        <div className="text-left text-sm text-[var(--muted)] sm:text-right">
-                          <p className="font-medium text-[var(--ink)]">{d.range}</p>
+                        <div className="shrink-0 text-left text-sm tabular-nums tracking-tight text-[var(--muted)] sm:text-right">
+                          <p className="font-semibold text-[var(--ink)]">{d.range}</p>
                           <p>{d.location}</p>
                         </div>
                       </div>
                       {d.description && (
-                        <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">
+                        <p className="mt-4 text-sm leading-relaxed tracking-tight text-[var(--muted)]">
                           {d.description}
                         </p>
                       )}
                       {d.coursework && d.coursework.length > 0 && (
-                        <div className="mt-4">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+                        <div className="mt-5">
+                          <p className={`${uiEyebrowMuted} tracking-[0.14em]`}>
                             Relevant coursework
                           </p>
                           <div className="mt-2 flex flex-wrap gap-2">
                             {d.coursework.map((c) => (
-                              <span
-                                key={c}
-                                className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-xs font-medium text-[var(--ink)]"
-                              >
+                              <span key={c} className={uiTagSolid}>
                                 {c}
                               </span>
                             ))}
                           </div>
                         </div>
                       )}
-                    </article>
+                    </motion.article>
                   ))}
                 </div>
               </div>
@@ -387,14 +421,14 @@ export function ExperienceEducationSection() {
                 </div>
 
                 <div className="mt-4 min-w-0 lg:mt-0">
-                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
-                    <p className="text-sm text-[var(--muted)]">
+                  <div className={`p-6 sm:p-7 ${uiCardSurface}`}>
+                    <p className="text-sm font-medium tracking-tight text-[var(--muted)]">
                       Diplomas, bootcamps, and courses.
                     </p>
-                    <ul className="mt-4 space-y-2 text-sm text-[var(--muted)]">
+                    <ul className="mt-5 space-y-2.5 text-sm leading-relaxed tracking-tight text-[var(--muted)]">
                       {CERTIFICATIONS.map((c) => (
                         <li key={c} className="flex gap-2">
-                          <span className="text-[var(--muted)]" aria-hidden>
+                          <span className="font-semibold text-[var(--accent)]" aria-hidden>
                             ·
                           </span>
                           <span>{c}</span>

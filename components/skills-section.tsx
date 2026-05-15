@@ -2,7 +2,22 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
+import {
+  reducedOrSpring,
+  springHoverLift,
+  springReveal,
+  springRevealSoft,
+  springTap,
+  viewportReveal,
+} from "@/lib/motion";
 import { SKILL_KEYS } from "@/lib/site";
+import {
+  uiDisplayHeading,
+  uiEyebrowMuted,
+  uiLead,
+  uiSectionDivider,
+  uiSectionScrollMargin,
+} from "@/lib/ui-classes";
 import { skillKeyTheme } from "@/lib/skill-key-theme";
 
 function hashTilt(i: number): number {
@@ -67,11 +82,7 @@ function SkillKey({
       initial={reduce ? false : { opacity: 0, y: 16, scale: 0.92 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-24px" }}
-      transition={{
-        duration: reduce ? 0 : 0.4,
-        delay: reduce ? 0 : index * 0.025,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+      transition={reducedOrSpring(reduce, springRevealSoft, index * 0.025)}
       whileHover={
         reduce
           ? undefined
@@ -79,7 +90,7 @@ function SkillKey({
               scale: 1.09,
               y: -6,
               rotate: tilt * 0.2,
-              transition: { duration: 0.1, ease: "easeOut" },
+              transition: springHoverLift,
             }
       }
       whileTap={
@@ -89,7 +100,7 @@ function SkillKey({
               scale: 0.94,
               y: 4,
               boxShadow: theme.shadowPressed,
-              transition: { duration: 0.07, ease: "easeOut" },
+              transition: springTap,
             }
       }
       style={{
@@ -124,21 +135,20 @@ export function SkillsSection() {
   );
 
   return (
-    <section id="skills" className="px-4 py-20 sm:px-6">
+    <section
+      id="skills"
+      className={`${uiSectionScrollMargin} ${uiSectionDivider} px-4 py-20 sm:px-6`}
+    >
       <div className="mx-auto max-w-6xl">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-64px" }}
-          transition={{ duration: reduce ? 0 : 0.5 }}
+          viewport={viewportReveal}
+          transition={reducedOrSpring(reduce, springReveal)}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-            Tech stack
-          </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
-            Skills
-          </h2>
-          <p className="mt-3 max-w-2xl text-[var(--muted)]">
+          <p className={uiEyebrowMuted}>Tech stack</p>
+          <h2 className={`mt-2 ${uiDisplayHeading}`}>Skills</h2>
+          <p className={uiLead}>
             Hover over skills for a surprise!
           </p>
         </motion.div>
@@ -165,7 +175,7 @@ export function SkillsSection() {
               initial={reduce ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? undefined : { opacity: 0, y: -8 }}
-              transition={{ duration: reduce ? 0 : 0.2 }}
+              transition={reducedOrSpring(reduce, springRevealSoft)}
               aria-live="polite"
             >
               <p className="text-lg font-semibold text-[var(--ink)] sm:text-xl">

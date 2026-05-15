@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { reducedOrSpring, springChrome } from "@/lib/motion";
 import { SITE } from "@/lib/site";
 
 const links = [
@@ -24,10 +25,10 @@ export function SiteHeader() {
   return (
     <>
       <motion.header
-        className="sticky top-0 z-50 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--surface)_88%,transparent)] backdrop-blur-md"
+        className="sticky top-0 z-50 border-b border-[color-mix(in_srgb,var(--border)_38%,transparent)] bg-[color-mix(in_srgb,var(--surface)_78%,transparent)] shadow-[0_1px_0_color-mix(in_srgb,var(--ink)_5%,transparent)] backdrop-blur-xl backdrop-saturate-150"
         initial={reduce ? false : { y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+        transition={reducedOrSpring(reduce, springChrome)}
       >
         <div className="mx-auto flex h-12 max-w-6xl items-center justify-between gap-2 px-3 sm:h-14 sm:px-6">
           <Link
@@ -37,12 +38,12 @@ export function SiteHeader() {
           >
             {SITE.name}
           </Link>
-          <nav className="hidden flex-wrap justify-end gap-x-3 gap-y-1 text-xs font-medium text-[var(--muted)] sm:flex md:gap-x-4 md:text-sm">
+          <nav className="hidden flex-wrap justify-end gap-x-3 gap-y-1 text-[13px] font-medium tracking-tight text-[var(--muted)] sm:flex md:gap-x-4 md:text-sm">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className="transition-colors hover:text-[var(--accent)]"
+                className="rounded-md px-1.5 py-1 transition-colors duration-200 hover:text-[var(--accent)]"
               >
                 {l.label}
               </Link>
@@ -53,7 +54,7 @@ export function SiteHeader() {
               href={SITE.cvUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-[11px] font-semibold text-[var(--ink)] shadow-sm transition hover:border-[var(--accent)] hover:text-[var(--accent)] sm:px-3 sm:py-1.5 sm:text-sm"
+              className="rounded-full border border-[color-mix(in_srgb,var(--border)_42%,transparent)] bg-[var(--surface)] px-2.5 py-1 text-[11px] font-semibold tracking-tight text-[var(--ink)] shadow-[var(--shadow-card)] transition-[border-color,color,box-shadow] duration-200 hover:border-[color-mix(in_srgb,var(--accent)_35%,var(--border))] hover:text-[var(--accent)] hover:shadow-[var(--shadow-card-hover)] sm:px-3 sm:py-1.5 sm:text-sm"
             >
               CV
             </Link>
@@ -61,13 +62,13 @@ export function SiteHeader() {
               href={SITE.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-[var(--accent)] px-2.5 py-1 text-[11px] font-semibold text-white shadow-md transition hover:bg-[var(--accent-hover)] max-[430px]:hidden sm:px-3 sm:py-1.5 sm:text-sm"
+              className="rounded-full bg-[var(--accent)] px-2.5 py-1 text-[11px] font-semibold tracking-tight text-white shadow-[var(--shadow-card-hover)] transition-[background-color,transform] duration-200 hover:bg-[var(--accent-hover)] hover:brightness-[1.02] max-[430px]:hidden sm:px-3 sm:py-1.5 sm:text-sm"
             >
               GitHub
             </a>
             <button
               type="button"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--ink)] sm:hidden"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--border)_42%,transparent)] bg-[var(--surface)] text-[var(--ink)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[color-mix(in_srgb,var(--accent)_28%,var(--border))] sm:hidden"
               aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
               onClick={() => setMenuOpen((s) => !s)}
             >
@@ -87,16 +88,17 @@ export function SiteHeader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={reducedOrSpring(reduce, springChrome)}
               onClick={() => setMenuOpen(false)}
             />
             <motion.aside
-              className="fixed right-0 top-12 z-50 h-[calc(100dvh-3rem)] w-[min(82vw,20rem)] border-l border-[var(--border)] bg-[var(--surface)] p-4 shadow-2xl sm:hidden"
+              className="fixed right-0 top-12 z-50 h-[calc(100dvh-3rem)] w-[min(82vw,20rem)] border-l border-[color-mix(in_srgb,var(--border)_42%,transparent)] bg-[color-mix(in_srgb,var(--surface)_94%,transparent)] p-4 shadow-[var(--shadow-card-hover)] backdrop-blur-xl backdrop-saturate-150 sm:hidden"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ duration: reduce ? 0 : 0.2, ease: "easeOut" }}
+              transition={reducedOrSpring(reduce, springChrome)}
             >
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
                 Short attention span?
               </p>
               <nav className="flex flex-col gap-1">
@@ -104,14 +106,14 @@ export function SiteHeader() {
                   <Link
                     key={`mobile-${l.href}`}
                     href={l.href}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-[var(--ink)] transition hover:bg-[var(--surface-muted)]"
+                    className="rounded-xl px-3 py-2 text-sm font-medium tracking-tight text-[var(--ink)] transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--surface-muted)_88%,transparent)]"
                     onClick={() => setMenuOpen(false)}
                   >
                     {l.label}
                   </Link>
                 ))}
               </nav>
-              <div className="mt-4 border-t border-[var(--border)] pt-4">
+              <div className="mt-4 border-t border-[color-mix(in_srgb,var(--border)_42%,transparent)] pt-4">
                 <a
                   href={SITE.github}
                   target="_blank"

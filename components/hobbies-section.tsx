@@ -2,6 +2,20 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import {
+  reducedOrSpring,
+  springHoverLift,
+  springReveal,
+  springRevealSoft,
+  viewportReveal,
+  viewportRevealTight,
+} from "@/lib/motion";
+import {
+  uiDisplayHeading,
+  uiEyebrowMuted,
+  uiSectionDivider,
+  uiSectionScrollMargin,
+} from "@/lib/ui-classes";
 
 const items = [
   {
@@ -33,7 +47,7 @@ export function HobbiesSection() {
   return (
     <section
       id="hobbies"
-      className="relative scroll-mt-24 overflow-hidden border-t border-[var(--border)] bg-[var(--bg)] px-4 py-20 sm:px-6"
+      className={`relative ${uiSectionScrollMargin} overflow-hidden ${uiSectionDivider} bg-[var(--bg)] px-4 py-20 sm:px-6`}
     >
       <div className="pointer-events-none absolute inset-0 hidden sm:block">
         <motion.div
@@ -41,11 +55,7 @@ export function HobbiesSection() {
           initial={slideFromLeft}
           whileInView={visible}
           viewport={{ once: true, amount: 0.25, margin: "-80px 0px" }}
-          transition={{
-            duration: reduce ? 0 : 0.65,
-            ease: [0.22, 1, 0.36, 1],
-            delay: reduce ? 0 : 0.05,
-          }}
+          transition={reducedOrSpring(reduce, springRevealSoft, reduce ? 0 : 0.05)}
           aria-hidden
         >
           <Image
@@ -63,11 +73,11 @@ export function HobbiesSection() {
           initial={slideFromRight}
           whileInView={visible}
           viewport={{ once: true, amount: 0.25, margin: "-80px 0px" }}
-          transition={{
-            duration: reduce ? 0 : 0.65,
-            ease: [0.22, 1, 0.36, 1],
-            delay: reduce ? 0 : 0.12,
-          }}
+          transition={reducedOrSpring(
+            reduce,
+            springRevealSoft,
+            reduce ? 0 : 0.12,
+          )}
           aria-hidden
         >
           <Image
@@ -86,16 +96,12 @@ export function HobbiesSection() {
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-64px" }}
-          transition={{ duration: reduce ? 0 : 0.45 }}
+          viewport={viewportReveal}
+          transition={reducedOrSpring(reduce, springReveal)}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-            Beyond the screen
-          </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
-            Hobbies
-          </h2>
-          <p className="mt-3 text-[var(--muted)]">
+          <p className={uiEyebrowMuted}>Beyond the screen</p>
+          <h2 className={`mt-2 ${uiDisplayHeading}`}>Hobbies</h2>
+          <p className="mt-3 tracking-tight text-[var(--muted)]">
             A few things that keep me balanced when I&apos;m not building or
             learning.
           </p>
@@ -105,17 +111,23 @@ export function HobbiesSection() {
           {items.map((item, i) => (
             <motion.li
               key={item.title}
-              className="rounded-2xl border border-[var(--border)] bg-[color-mix(in_srgb,var(--surface)_86%,transparent)] px-5 py-4 shadow-sm backdrop-blur-sm sm:px-6"
-              initial={reduce ? false : { opacity: 0, y: 12 }}
+              className="rounded-2xl border border-[color-mix(in_srgb,var(--border)_38%,transparent)] bg-[color-mix(in_srgb,var(--surface)_90%,transparent)] px-5 py-4 shadow-[var(--shadow-card)] ring-1 ring-[color-mix(in_srgb,var(--ink)_3%,transparent)] backdrop-blur-md sm:px-6"
+              initial={reduce ? false : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                duration: reduce ? 0 : 0.4,
-                delay: reduce ? 0 : 0.08 * i,
-              }}
+              viewport={viewportRevealTight}
+              transition={reducedOrSpring(
+                reduce,
+                springRevealSoft,
+                i * 0.07,
+              )}
+              whileHover={
+                reduce ? undefined : { y: -4, transition: springHoverLift }
+              }
             >
-              <h3 className="font-semibold text-[var(--ink)]">{item.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)] sm:text-base">
+              <h3 className="font-semibold tracking-tight text-[var(--ink)]">
+                {item.title}
+              </h3>
+              <p className="mt-1.5 text-sm leading-relaxed tracking-tight text-[var(--muted)] sm:text-base">
                 {item.body}
               </p>
             </motion.li>
@@ -131,11 +143,11 @@ export function HobbiesSection() {
             initial={slideFromLeft}
             whileInView={visible}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{
-              duration: reduce ? 0 : 0.65,
-              ease: [0.22, 1, 0.36, 1],
-              delay: reduce ? 0 : 0.05,
-            }}
+            transition={reducedOrSpring(
+              reduce,
+              springRevealSoft,
+              reduce ? 0 : 0.05,
+            )}
           >
             <Image
               src="/hobbies/basketball.png"
@@ -150,11 +162,11 @@ export function HobbiesSection() {
             initial={slideFromRight}
             whileInView={visible}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{
-              duration: reduce ? 0 : 0.65,
-              ease: [0.22, 1, 0.36, 1],
-              delay: reduce ? 0 : 0.12,
-            }}
+            transition={reducedOrSpring(
+              reduce,
+              springRevealSoft,
+              reduce ? 0 : 0.12,
+            )}
           >
             <Image
               src="/hobbies/gym.png"

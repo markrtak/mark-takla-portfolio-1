@@ -1,6 +1,11 @@
 "use client";
 
-import { motion, useTransform, type MotionValue } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 
 type ScribbleFont = "fredoka" | "chewy";
 
@@ -224,6 +229,14 @@ function buildScribbles(target: number): Scribble[] {
 
 const SCRIBBLES = buildScribbles(78);
 
+/** Sharper center response so small pointer moves read on the outer ring. */
+function tactileDelta(norm: number, gain: number): number {
+  const d = norm - 0.5;
+  if (Math.abs(d) < 1e-9) return 0;
+  const mag = Math.pow(Math.abs(d), 0.87);
+  return Math.sign(d) * mag * gain;
+}
+
 const FONT_STACK: Record<ScribbleFont, string> = {
   fredoka: "var(--font-scribble), system-ui, sans-serif",
   chewy: "var(--font-scribble-alt), var(--font-scribble), cursive, sans-serif",
@@ -233,20 +246,30 @@ type ScribbleItemProps = {
   item: Scribble;
   springX: MotionValue<number>;
   springY: MotionValue<number>;
+  reduce: boolean | null;
 };
 
-function ScribbleItem({ item, springX, springY }: ScribbleItemProps) {
-  const mult = 28 * item.strength;
+function ScribbleItem({ item, springX, springY, reduce }: ScribbleItemProps) {
+  const baseMult = 28 * item.strength;
+  const ringDx = item.nx - 0.5;
+  const ringDy = item.ny - 0.46;
+  const ringBoost =
+    1 + Math.min(0.2, Math.hypot(ringDx * 1.12, ringDy * 1.04) * 0.92);
+  const mult = baseMult * ringBoost;
 
-  const tx = useTransform(springX, (cx) => (cx - 0.5) * mult);
-  const ty = useTransform(springY, (cy) => (cy - 0.5) * mult);
+  const tx = useTransform(springX, (cx) =>
+    reduce ? 0 : tactileDelta(cx, mult),
+  );
+  const ty = useTransform(springY, (cy) =>
+    reduce ? 0 : tactileDelta(cy, mult),
+  );
 
   const leftPct = item.nx * 100;
   const topPct = item.ny * 100;
 
   return (
     <motion.span
-      className="pointer-events-none absolute max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 select-none"
+      className="pointer-events-none absolute max-w-[calc(100vw-2rem)] will-change-transform -translate-x-1/2 -translate-y-1/2 select-none"
       style={{
         left: `${leftPct}%`,
         top: `${topPct}%`,
@@ -270,6 +293,7 @@ type HeroScribbleLayerProps = {
 };
 
 export function HeroScribbleLayer({ springX, springY }: HeroScribbleLayerProps) {
+  const reduce = useReducedMotion();
   return (
     <div
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
@@ -281,6 +305,7 @@ export function HeroScribbleLayer({ springX, springY }: HeroScribbleLayerProps) 
           item={item}
           springX={springX}
           springY={springY}
+          reduce={reduce}
         />
       ))}
     </div>

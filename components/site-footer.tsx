@@ -3,7 +3,13 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
+import {
+  reducedOrSpring,
+  springRevealSoft,
+  springTactile,
+} from "@/lib/motion";
 import { SITE } from "@/lib/site";
+import { uiSectionDivider, uiSectionScrollMargin } from "@/lib/ui-classes";
 
 export function SiteFooter() {
   const reduce = useReducedMotion();
@@ -12,30 +18,29 @@ export function SiteFooter() {
   return (
     <motion.footer
       id="contact"
-      className="relative overflow-hidden border-t border-[var(--border)] bg-[var(--surface-muted)] px-4 py-16 text-[var(--ink)] sm:px-6 sm:py-20"
+      className={`relative ${uiSectionScrollMargin} overflow-hidden ${uiSectionDivider} bg-[var(--surface-muted)] px-4 py-16 text-[var(--ink)] sm:px-6 sm:py-20`}
       initial={reduce ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: reduce ? 0 : 0.6 }}
+      transition={reducedOrSpring(reduce, springRevealSoft)}
     >
       <motion.div
         className="pointer-events-none absolute right-2 top-1/2 z-0 hidden -translate-y-1/2 md:flex md:flex-col md:items-center md:gap-3 lg:right-4"
         initial={reduce ? false : { y: 150, x: 36, opacity: 0 }}
         whileInView={{ y: 0, x: 0, opacity: 1 }}
         viewport={{ once: true, amount: 0.45 }}
-        transition={{
-          duration: reduce ? 0 : 0.75,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        animate={
-          reduce
-            ? undefined
-            : {
-                scale: contactLinkHover ? 1.08 : 1,
-              }
-        }
-        style={{ transformOrigin: "center center" }}
+        transition={reducedOrSpring(reduce, springRevealSoft)}
       >
+        <motion.div
+          className="flex flex-col items-center gap-3"
+          animate={
+            reduce
+              ? undefined
+              : { scale: contactLinkHover ? 1.06 : 1 }
+          }
+          transition={reduce ? { duration: 0 } : springTactile}
+          style={{ transformOrigin: "center center" }}
+        >
         <Image
           src="/contact-call-character.png"
           alt=""
@@ -48,6 +53,7 @@ export function SiteFooter() {
         <p className="text-center text-sm uppercase tracking-[0.2em] text-[var(--muted)]">
           MA3 EL SALAMA - TAKE CARE
         </p>
+        </motion.div>
       </motion.div>
 
       <div className="relative z-10 mx-auto flex max-w-6xl items-center justify-between gap-4 pr-0 md:items-start md:pr-56 lg:pr-72">
@@ -71,7 +77,7 @@ export function SiteFooter() {
                 onMouseLeave={() => setContactLinkHover(false)}
                 onFocus={() => setContactLinkHover(true)}
                 onBlur={() => setContactLinkHover(false)}
-                className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-7 py-3 font-semibold text-white transition hover:bg-[var(--accent-hover)]"
+                className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-7 py-3 font-semibold tracking-tight text-white shadow-[var(--shadow-card-hover)] transition-[background-color,box-shadow] duration-200 hover:bg-[var(--accent-hover)] hover:brightness-[1.02]"
               >
                 Email Me
               </a>
@@ -151,10 +157,7 @@ export function SiteFooter() {
           initial={reduce ? false : { x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{
-            duration: reduce ? 0 : 0.6,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          transition={reducedOrSpring(reduce, springRevealSoft)}
         >
           <Image
             src="/contact-call-character.png"
@@ -170,7 +173,7 @@ export function SiteFooter() {
           </p>
         </motion.div>
       </div>
-      <p className="mx-auto mt-14 max-w-6xl border-t border-[var(--border)] pt-8 text-center text-xs text-[var(--muted)]">
+      <p className="mx-auto mt-14 max-w-6xl border-t border-[color-mix(in_srgb,var(--border)_42%,transparent)] pt-8 text-center text-xs tracking-tight text-[var(--muted)]">
         © 2026 Mark Takla. Built with Next.js.
       </p>
     </motion.footer>

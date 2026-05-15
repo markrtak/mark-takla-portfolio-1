@@ -2,6 +2,11 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
+import {
+  reducedOrSpring,
+  springReveal,
+  viewportReveal,
+} from "@/lib/motion";
 
 type FadeInProps = {
   children: ReactNode;
@@ -23,12 +28,8 @@ export function FadeIn({
       className={className}
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-64px" }}
-      transition={{
-        duration: reduce ? 0 : 0.55,
-        delay: reduce ? 0 : delay,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+      viewport={viewportReveal}
+      transition={reducedOrSpring(reduce, springReveal, delay)}
     >
       {children}
     </motion.div>

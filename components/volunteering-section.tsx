@@ -1,7 +1,23 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import {
+  reducedOrSpring,
+  springHoverLift,
+  springRevealSoft,
+  viewportReveal,
+  viewportRevealTight,
+} from "@/lib/motion";
 import { VOLUNTEERING } from "@/lib/site";
+import {
+  uiDisplayHeading,
+  uiEyebrowAccent,
+  uiLead,
+  uiSectionDivider,
+  uiSectionScrollMargin,
+  uiTagOutline,
+  uiTagSolid,
+} from "@/lib/ui-classes";
 
 const vibeStyles = {
   ribbon: {
@@ -30,7 +46,7 @@ export function VolunteeringSection() {
   return (
     <section
       id="volunteering"
-      className="relative scroll-mt-24 overflow-hidden border-t border-[var(--border)] bg-[var(--bg)] px-4 py-20 sm:px-6"
+      className={`relative ${uiSectionScrollMargin} overflow-hidden ${uiSectionDivider} bg-[var(--bg)] px-4 py-20 sm:px-6`}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.35]"
@@ -46,16 +62,12 @@ export function VolunteeringSection() {
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-64px" }}
-          transition={{ duration: reduce ? 0 : 0.45 }}
+          viewport={viewportReveal}
+          transition={reducedOrSpring(reduce, springRevealSoft)}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-            Giving back
-          </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-4xl">
-            Volunteering
-          </h2>
-          <p className="mt-3 max-w-2xl text-[var(--muted)]">
+          <p className={uiEyebrowAccent}>Giving back</p>
+          <h2 className={`mt-2 ${uiDisplayHeading}`}>Volunteering</h2>
+          <p className={uiLead}>
             Committing hundreds of hours to what counts and matters.
           </p>
         </motion.div>
@@ -67,21 +79,24 @@ export function VolunteeringSection() {
             return (
               <motion.li
                 key={`${entry.title}-${entry.organization}`}
-                initial={reduce ? false : { opacity: 0, y: 28 }}
+                initial={reduce ? false : { opacity: 0, y: 26 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{
-                  duration: reduce ? 0 : 0.5,
-                  delay: reduce ? 0 : 0.08 * i,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
+                viewport={viewportRevealTight}
+                transition={reducedOrSpring(
+                  reduce,
+                  springRevealSoft,
+                  i * 0.075,
+                )}
+                whileHover={
+                  reduce ? undefined : { y: -6, transition: springHoverLift }
+                }
                 className={`group relative list-none ${tilt}`}
               >
                 <div
-                  className={`relative rounded-[1.75rem] bg-gradient-to-br p-[1px] shadow-[0_20px_50px_-24px_rgba(0,0,0,0.25)] ${v.shell}`}
+                  className={`relative rounded-[1.75rem] bg-gradient-to-br p-[1px] shadow-[var(--shadow-card)] transition-[box-shadow] duration-300 group-hover:shadow-[var(--shadow-card-hover)] ${v.shell}`}
                 >
                   <article
-                    className="relative h-full overflow-hidden rounded-[1.7rem] border border-[color-mix(in_srgb,var(--border)_55%,transparent)] bg-[var(--surface)]"
+                    className="relative h-full overflow-hidden rounded-[1.7rem] border border-[color-mix(in_srgb,var(--border)_38%,transparent)] bg-[var(--surface)] shadow-[var(--shadow-card)] ring-1 ring-[color-mix(in_srgb,var(--ink)_3%,transparent)] transition-[border-color] duration-300 group-hover:border-[color-mix(in_srgb,var(--accent)_22%,var(--border))]"
                     style={{
                       clipPath:
                         entry.vibe === "ticket"
@@ -90,7 +105,7 @@ export function VolunteeringSection() {
                     }}
                   >
                     <div
-                      className="absolute -right-8 top-5 z-[2] w-40 rotate-45 py-1 text-center text-[10px] font-bold uppercase tracking-widest text-white shadow-sm"
+                      className="absolute -right-8 top-5 z-[2] w-40 rotate-45 py-1 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-[var(--shadow-card)]"
                       style={{
                         background:
                           "linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent-hover) 85%, var(--accent)))",
@@ -125,23 +140,19 @@ export function VolunteeringSection() {
                           >
                             {entry.title}
                           </h3>
-                          <p className="mt-1 text-sm font-semibold text-[var(--ink)]">
+                          <p className="mt-1 text-sm font-semibold tracking-tight text-[var(--ink)]">
                             {entry.organization}
                           </p>
                         </div>
                       </div>
 
-                      <p className="mt-4 text-sm leading-relaxed text-[var(--muted)]">
+                      <p className="mt-4 text-sm leading-relaxed tracking-tight text-[var(--muted)]">
                         {entry.summary}
                       </p>
 
-                      <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-dashed border-[var(--border)] pt-4 text-xs text-[var(--muted)]">
-                        <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1 font-medium text-[var(--ink)]">
-                          {entry.range}
-                        </span>
-                        <span className="rounded-full border border-[var(--border)] px-3 py-1">
-                          {entry.location}
-                        </span>
+                      <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-dashed border-[color-mix(in_srgb,var(--border)_48%,transparent)] pt-4 text-[11px] tracking-wide text-[var(--muted)]">
+                        <span className={uiTagSolid}>{entry.range}</span>
+                        <span className={uiTagOutline}>{entry.location}</span>
                       </div>
                     </div>
                   </article>

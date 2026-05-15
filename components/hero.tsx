@@ -1,6 +1,5 @@
 "use client";
 
-import { HeroScribbleLayer } from "@/components/hero-scribbles";
 import {
   motion,
   useMotionTemplate,
@@ -12,6 +11,13 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
+import { HeroScribbleLayer } from "@/components/hero-scribbles";
+import {
+  reducedOrSpring,
+  springHeroScribbleConfig,
+  springReveal,
+} from "@/lib/motion";
+import { uiSectionScrollMargin } from "@/lib/ui-classes";
 import { SITE } from "@/lib/site";
 
 export function Hero() {
@@ -46,16 +52,8 @@ export function Hero() {
 
   const spotlightBg = useMotionTemplate`radial-gradient(40% 32% at ${spotX}% ${spotY}%, rgba(255,255,255,0.16), transparent 60%)`;
 
-  const springX = useSpring(mouseX, {
-    stiffness: 120,
-    damping: 28,
-    mass: 0.4,
-  });
-  const springY = useSpring(mouseY, {
-    stiffness: 120,
-    damping: 28,
-    mass: 0.4,
-  });
+  const springX = useSpring(mouseX, springHeroScribbleConfig);
+  const springY = useSpring(mouseY, springHeroScribbleConfig);
 
   useEffect(() => {
     if (reduce) return;
@@ -121,7 +119,7 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="top"
-      className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pb-28 sm:pt-24"
+      className={`relative ${uiSectionScrollMargin} overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pb-28 sm:pt-24`}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
     >
@@ -133,7 +131,7 @@ export function Hero() {
           className="relative w-[min(220px,72vw)] shrink-0 sm:w-[min(260px,55vw)] md:w-[min(280px,38%)]"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduce ? 0 : 0.5 }}
+          transition={reducedOrSpring(reduce, springReveal)}
         >
           <div ref={charRef} className="relative isolate">
             {reduce ? (
@@ -184,7 +182,7 @@ export function Hero() {
             className="mb-6 flex flex-col items-center gap-3 md:items-start"
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.08 }}
+            transition={reducedOrSpring(reduce, springReveal, reduce ? 0 : 0.08)}
           >
             <span
               className="max-md:[text-shadow:0_0_14px_var(--surface),0_2px_8px_color-mix(in_srgb,var(--surface)_95%,transparent)] text-3xl font-semibold tracking-[0.08em] text-[var(--accent)] sm:text-4xl"
@@ -201,7 +199,7 @@ export function Hero() {
             className="max-md:[text-shadow:0_0_14px_var(--surface),0_1px_3px_var(--surface),0_2px_24px_color-mix(in_srgb,var(--surface)_90%,transparent)] text-4xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl lg:text-6xl"
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.06 }}
+            transition={reducedOrSpring(reduce, springReveal, reduce ? 0 : 0.06)}
           >
             Mark Raymond Takla
             <span className="max-md:[text-shadow:0_0_12px_var(--surface),0_2px_10px_color-mix(in_srgb,var(--surface)_88%,transparent)] mt-1 block text-[var(--accent)]">
@@ -213,7 +211,7 @@ export function Hero() {
             className="mt-6 max-w-xl max-md:[text-shadow:0_0_12px_var(--surface),0_1px_2px_var(--surface)] text-lg leading-relaxed text-[var(--muted)]"
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.12 }}
+            transition={reducedOrSpring(reduce, springReveal, reduce ? 0 : 0.12)}
           >
             Projects spanning Agentic AI, ML baselines, agents, data pipelines,
             and full-stack apps. Based in {SITE.location}.
@@ -223,11 +221,11 @@ export function Hero() {
             className="mt-10 flex flex-wrap justify-center gap-3 md:justify-start"
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.18 }}
+            transition={reducedOrSpring(reduce, springReveal, reduce ? 0 : 0.18)}
           >
             <Link
               href="#projects"
-              className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[var(--accent-hover)]"
+              className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-semibold tracking-tight text-white shadow-[var(--shadow-card-hover)] transition-[background-color,box-shadow] duration-200 hover:bg-[var(--accent-hover)] hover:brightness-[1.02]"
             >
               See projects
             </Link>
@@ -235,7 +233,7 @@ export function Hero() {
               href={SITE.cvUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-6 py-3 text-sm font-semibold text-[var(--ink)] shadow-sm transition hover:border-[var(--accent)]"
+              className="inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--border)_42%,transparent)] bg-[var(--surface)] px-6 py-3 text-sm font-semibold tracking-tight text-[var(--ink)] shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-200 hover:border-[color-mix(in_srgb,var(--accent)_35%,var(--border))] hover:shadow-[var(--shadow-card-hover)]"
             >
               Download CV
             </Link>
