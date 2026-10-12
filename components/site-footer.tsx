@@ -174,7 +174,7 @@ export function SiteFooter() {
         </motion.div>
       </div>
       <p className="mx-auto mt-14 max-w-6xl border-t border-[color-mix(in_srgb,var(--border)_42%,transparent)] pt-8 text-center text-xs tracking-tight text-[var(--muted)]">
-        © 2026 Mark Takla. Built with Next.js.
+        © 2026 Mark Takla.
       </p>
     </motion.footer>
   );

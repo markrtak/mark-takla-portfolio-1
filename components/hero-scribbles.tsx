@@ -151,7 +151,7 @@ function hash01(i: number, salt: number): number {
   return ((x >>> 0) % 10007) / 10007;
 }
 
-/** Outer ring — placement candidates. */
+/** Outer ring: placement candidates. */
 function ringCandidate(seed: number): { nx: number; ny: number } {
   const cx = 0.5;
   const cy = 0.46;

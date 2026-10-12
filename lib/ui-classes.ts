@@ -1,5 +1,5 @@
 /**
- * Repeated composition tokens — pair with CSS vars in globals.css (--shadow-card, etc.).
+ * Repeated composition tokens: pair with CSS vars in globals.css (--shadow-card, etc.).
  */
 
 /** Sticky header clearance for hash / in-page scroll targets (matches header ~48–56px + air). */

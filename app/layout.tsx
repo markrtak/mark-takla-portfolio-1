@@ -35,7 +35,7 @@ const scribbleB = Chewy({
   display: "swap",
 });
 
-/** AHLAN greeting — Arabic-inspired Latin display */
+/** AHLAN greeting: Arabic-inspired Latin display */
 const ahlan = Reem_Kufi_Fun({
   variable: "--font-ahlan",
   subsets: ["arabic", "latin"],
@@ -51,15 +51,15 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Mark Takla — Data science portfolio",
-    template: "%s — Mark Takla",
+    default: "Mark Takla - Data science portfolio",
+    template: "%s - Mark Takla",
   },
   description:
-    "Data science, ML, and full-stack projects by Mark Takla — New Cairo, Egypt.",
+    "Data science, ML, and full-stack projects by Mark Takla - New Cairo, Egypt.",
   openGraph: {
-    title: "Mark Takla — Data science portfolio",
+    title: "Mark Takla - Data science portfolio",
     description:
-      "Data science, ML, and full-stack projects — portfolio and GitHub work.",
+      "Data science, ML, and full-stack projects - portfolio and GitHub work.",
     type: "website",
   },
 };

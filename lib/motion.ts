@@ -46,7 +46,7 @@ export const springTactile: Transition = {
   damping: 34,
 };
 
-/** Cursor-follow ring behind hero — slightly snappier than default UI springs. */
+/** Cursor-follow ring behind hero: slightly snappier than default UI springs. */
 export const springHeroScribbleConfig = {
   stiffness: 188,
   damping: 28,

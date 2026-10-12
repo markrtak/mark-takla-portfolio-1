@@ -2,7 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import {
   reducedOrSpring,
   springHoverLift,
@@ -28,6 +29,27 @@ import {
 type TabId = "experience" | "education" | "certifications";
 
 type RGB = { r: number; g: number; b: number };
+
+const DEMO_LINK_MARKER = "(Demo link)";
+
+function renderExperienceBullet(text: string, demoUrl?: string): ReactNode {
+  if (!demoUrl || !text.includes(DEMO_LINK_MARKER)) return text;
+  const [before, ...rest] = text.split(DEMO_LINK_MARKER);
+  return (
+    <>
+      {before}
+      <Link
+        href={demoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
+      >
+        Demo link
+      </Link>
+      {rest.join(DEMO_LINK_MARKER)}
+    </>
+  );
+}
 
 const TABS: { id: TabId; label: string; short: string }[] = [
   { id: "experience", label: "Experience", short: "Experience" },
@@ -57,6 +79,9 @@ function screenGlowFromTags(tags?: string[]): RGB {
   if (blob.includes("matlab")) return { r: 168, g: 85, b: 247 };
   if (blob.includes("uipath") || blob.includes("rpa")) {
     return { r: 6, g: 182, b: 212 };
+  }
+  if (blob.includes("langgraph") || blob.includes("postman") || blob.includes("api")) {
+    return { r: 244, g: 114, b: 182 };
   }
   if (blob.includes("robotics")) return { r: 52, g: 211, b: 153 };
   if (blob.includes("rail") || blob.includes("scada")) {
@@ -311,7 +336,9 @@ export function ExperienceEducationSection() {
                       {job.bullets && job.bullets.length > 0 && (
                         <ul className="mt-3 list-inside list-disc space-y-1.5 text-sm leading-relaxed tracking-tight text-[var(--muted)]">
                           {job.bullets.map((b) => (
-                            <li key={b}>{b}</li>
+                            <li key={b}>
+                              {renderExperienceBullet(b, job.demoUrl)}
+                            </li>
                           ))}
                         </ul>
                       )}

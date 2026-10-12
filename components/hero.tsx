@@ -42,7 +42,7 @@ export function Hero() {
     mass: 0.32,
   });
 
-  /** Subtle “head / gaze” toward cursor — small angles only, no full-body tilt. */
+  /** Subtle “head / gaze” toward cursor: small angles only, no full-body tilt. */
   const gazeRotate = useTransform(gazeSpringX, [-0.5, 0.5], [-5.2, 5.2]);
   const gazeShiftX = useTransform(gazeSpringX, [-0.5, 0.5], [-3.5, 3.5]);
   const gazeShiftY = useTransform(gazeSpringY, [-0.5, 0.5], [-2.8, 2.8]);

@@ -72,7 +72,7 @@ export function VolunteeringSection() {
           </p>
         </motion.div>
 
-        <ul className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:gap-10">
+        <ul className="mt-14 grid gap-8 sm:grid-cols-2 xl:gap-10">
           {VOLUNTEERING.map((entry, i) => {
             const v = vibeStyles[entry.vibe];
             const tilt = i === 1 ? "md:-rotate-1" : i === 2 ? "md:rotate-1" : "";

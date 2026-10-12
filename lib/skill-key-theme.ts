@@ -1,4 +1,4 @@
-/** Candy-shop keycap colors — cycles through distinct fun hues (still readable on B&W page). */
+/** Candy-shop keycap colors: cycles through distinct fun hues (still readable on B&W page). */
 const KEYCAP_PALETTE: { h: number; sat: number; lightTop: number; lightBot: number }[] = [
   { h: 200, sat: 92, lightTop: 88, lightBot: 72 },
   { h: 280, sat: 78, lightTop: 90, lightBot: 74 },
